@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authRequired } from "../middlewares/validateToken.js";
-import { getTask, getTasks, createTask, deleteTask, updateTask, updateFinishedTask } from "../controllers/task.controller.js";
+import { getTask, getTasks, createTask, deleteTask, deleteTaskbyMarket, updateTask, updateFinishedTask } from "../controllers/task.controller.js";
 import {validateSchema} from '../middlewares/validator.middleware.js'
 import { createTaskSchema } from "../schemas/task.schema.js";
 
@@ -10,6 +10,7 @@ router.get('/tasks', authRequired, getTasks)
 router.get('/task/:id', authRequired, getTask)
 router.post('/task', authRequired, validateSchema(createTaskSchema), createTask)
 router.delete('/task/:id', authRequired, deleteTask)
+router.delete('/taskByMarket/:id', authRequired, deleteTaskbyMarket)
 router.put('/task/:id', authRequired, updateTask)
 router.put('/task-finished/:id', authRequired, updateFinishedTask)
 

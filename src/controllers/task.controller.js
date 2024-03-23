@@ -61,6 +61,16 @@ export const deleteTask = async (req, res)=> {
     }
 }
 
+export const deleteTaskbyMarket = async (req, res)=> {
+    try {
+        const task = await Task.deleteMany({ 'market._id': req.params.id })
+        return res.status(204).json({message: "Tareas eliminadas"})
+        
+    } catch (error) {
+        return res.status(404).json({message: "Task not found"})
+    }
+}
+
 export const updateTask = async (req, res)=> {
     try {
         const { title, description, quantity, market } = req.body;

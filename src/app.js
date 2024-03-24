@@ -9,12 +9,9 @@ import cors from 'cors'
 const app = express();
 
 //origin: 'http://localhost:5173',
+
 app.use(cors({
-    origin: 'http://localhost:5173',
-    credentials: true
-}));
-app.use(cors({
-    origin: 'https://alonso-chaves-shoppinghelper.netlify.app/',
+    origin: 'https://alonso-chaves-shoppinghelper.netlify.app',
     credentials: true
 }));
 app.use(morgan('dev'))

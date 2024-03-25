@@ -1,8 +1,7 @@
-import app from './app.js'
+/* import app from './functions/app.js'
 import { connectDB } from './db.js'
-
 
 
 connectDB()
 app.listen(3000)
-console.log('onport: 3000'); 
+console.log('onport: 3000');  */

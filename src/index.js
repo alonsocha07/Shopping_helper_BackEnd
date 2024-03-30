@@ -12,7 +12,7 @@ import serverless from 'serverless-http';
 const app = express();
 
 app.use(cors({
-    origin: 'https://alonso-chaves-shoppinghelper.netlify.app/'
+    origin: 'https://alonso-chaves-shoppinghelper.netlify.app'
 }));
 app.use(morgan('dev')) 
 app.use(express.json())

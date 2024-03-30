@@ -41,11 +41,15 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
+  console.log('Entre a login controller');
   const { email, password } = req.body;
-
+  console.log(`Email: ${email}`);
+  console.log(`password: ${password}`);
+  
   try {
-
+    
     const userFound = await User.findOne({email})
+    console.log(`userFound: ${userFound}`);
 
     if (!userFound) return res.status(400).json({error : ["Usuario no encontrado"]})
 

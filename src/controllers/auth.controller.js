@@ -1,11 +1,12 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import {createAccesToken} from '../libs/jwt.js'
+import {createAccessToken} from '../libs/jwt.js'
 import jwt from "jsonwebtoken";
 import { TOKEN_SECRET } from "../config.js";
 
 export const register = async (req, res) => {
   const { email, password, username } = req.body;
+
 
   try {
 
@@ -23,7 +24,7 @@ export const register = async (req, res) => {
     });
 
     const userSaved = await newUser.save();
-    const token = await createAccesToken({id: userSaved._id})
+    const token = await createAccessToken({id: userSaved._id})
 
     res.cookie('token', token) 
     res.json({
@@ -57,7 +58,7 @@ export const login = async (req, res) => {
 
     if (!isMatch) return res.status(400).json({error: ["Contraseña incorrecta"]})
 
-    const token = await createAccesToken({id: userFound._id})
+    const token = await createAccessToken({id: userFound._id, username: userFound.username,})
 
     res.cookie('token', token)
      res.json({

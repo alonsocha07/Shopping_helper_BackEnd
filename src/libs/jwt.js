@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import {TOKEN_SECRET} from '../config.js'
 
-export function createAccessToken(payload, res) {
+/*export function createAccessToken(payload, res) {
     return new Promise((resolve, reject) => {
         jwt.sign(
             payload,
@@ -24,11 +24,11 @@ export function createAccessToken(payload, res) {
             }
         );
     });
-}
+}*/
 
 
 
-/* export function createAccesToken(payload) {
+ export function createAccessToken(payload) {
     return new Promise((resolve, reject) => {
         jwt.sign(
             payload,
@@ -45,4 +45,4 @@ export function createAccessToken(payload, res) {
           );
         
     })
-} */
+} 

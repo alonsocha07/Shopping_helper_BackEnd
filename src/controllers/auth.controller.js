@@ -43,13 +43,17 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   console.log('Entre a login controller');
-  const { email, password } = req.body;
-  console.log(`Email: ${email}`);
-  console.log(`password: ${password}`);
+  let { email, password } = req.body;
+
+  if(req.body.isGuest === true){
+    email = "alonso070202@hotmail.com";
+    password = "123456";
+  }
+
   
   try {
     
-    const userFound = await User.findOne({email})
+    const userFound =  await User.findOne({email})
     console.log(`userFound: ${userFound}`);
 
     if (!userFound) return res.status(400).json({error : ["Usuario no encontrado"]})

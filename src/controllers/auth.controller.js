@@ -64,7 +64,12 @@ export const login = async (req, res) => {
 
     const token = await createAccessToken({id: userFound._id, username: userFound.username,})
 
-    res.cookie('token', token)
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,        
+      sameSite: "none",  
+    });
+    
      res.json({
       message: "Bienvenido al sistema",
       id: userFound.id,

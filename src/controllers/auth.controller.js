@@ -42,7 +42,7 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  console.log('Entre a login controller');
+
   let { email, password } = req.body;
 
   if(req.body.isGuest === true){
@@ -54,7 +54,7 @@ export const login = async (req, res) => {
   try {
     
     const userFound =  await User.findOne({email})
-    console.log(`userFound: ${userFound}`);
+    console.log(`userFound: ${userFound._id, userFound.username, userFound.email}`);
 
     if (!userFound) return res.status(400).json({error : ["Usuario no encontrado"]})
 
@@ -69,7 +69,7 @@ export const login = async (req, res) => {
       secure: true,        
       sameSite: "none",  
     });
-    
+
      res.json({
       message: "Bienvenido al sistema",
       id: userFound.id,

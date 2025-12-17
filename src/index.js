@@ -42,11 +42,3 @@ app.use('/api', router)
 
 var port = process.env.PORT || 9001;
 app.listen(port, () => console.log("listening to port: ", port))
-
-/* import app from './functions/app.js'
-import { connectDB } from './db.js'
-
-
-connectDB()
-app.listen(3000)
-console.log('onport: 3000');  */

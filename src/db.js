@@ -7,8 +7,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 export const connectDB = async () => {
     try {
-        //const url = process.env.URLMONGO || 'mongodb://127.0.0.1/shoppingHelperdb'
-        const url = 'mongodb+srv://shopping_db_user:j04gzT9XgjIDSTwR@clustershoppinghelper.vtvfoo2.mongodb.net/?appName=ClusterShoppingHelper'
+        const url = process.env.URLMONGO || 'mongodb://127.0.0.1/shoppingHelperdb'
         console.log('url de ejemplo ');
         await mongoose.connect(url)
         console.log('----------db is connected');

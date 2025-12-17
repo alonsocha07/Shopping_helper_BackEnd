@@ -54,9 +54,8 @@ export const deleteMarket = async (req, res)=> {
 
 export const updateMarket = async (req, res)=> {
     try {
-        console.log('req.body: update ', req.body);
         const market = await Market.findByIdAndUpdate(req.params.id, req.body ,{
-            new: true //es para que devuelva el dato nuevo 
+            new: true 
         })
         if(!market) return res.status(404).json({message: "Market not found"})
         res.json(market)

@@ -26,8 +26,6 @@ export const getTask = async (req, res)=> {
 
 export const createTask = async (req, res)=> {
     try {
-        console.log('req:   ',req.body);
-
         const {title, description, quantity, market } = req.body;
         const marketInfo = await marketModel.findById(market);
 
@@ -76,7 +74,6 @@ export const updateTask = async (req, res)=> {
         const { title, description, quantity, market } = req.body;
 
         let marketInfo;
-        console.log('--1--');
         if (market) {
             marketInfo = await marketModel.findById(market);
 
@@ -107,9 +104,6 @@ export const updateTask = async (req, res)=> {
 
 export const updateFinishedTask = async (req, res)=> {
     try {
-        console.log('req.params: ', req.params);
-        console.log('req.body: ', req.body);
-        
         const task = await Task.findByIdAndUpdate(req.params.id, { $set: {finished: !req.body.actualState} }, {new: true});
 
         if(!task) return res.status(404).json({message: "Task not found"})

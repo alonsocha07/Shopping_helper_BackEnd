@@ -28,6 +28,8 @@ app.use('/api', authRoutes)
 app.use('/api', taskRoutes)
 app.use('/api', marketRoutes)
 
+app.set('trust proxy', 1); //necesarry for the cookies to work in production with https (Reverse proxy)
+
 connectDB()
 
 const router = express.Router();

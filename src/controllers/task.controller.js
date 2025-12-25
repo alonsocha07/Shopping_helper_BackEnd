@@ -1,7 +1,7 @@
 import marketModel from '../models/market.model.js'
 import Task from '../models/task.model.js'
 
-export const getTasks = async (req, res)=> {
+export const getTasks = async (req, res, next)=> {
     try {
         const tasks = await Task.find({
             user: req.user.id
@@ -9,22 +9,22 @@ export const getTasks = async (req, res)=> {
         res.json(tasks)
         
     } catch (error) {
-        return res.status(404).json({message: "Tasks not found"})
+        next(error);
     }
 }
 
-export const getTask = async (req, res)=> {
+export const getTask = async (req, res, next)=> {
     try {
         const task = await Task.findById(req.params.id).populate('user')
         if(!task) return res.status(404).json({message: "Task not found"})
         res.json(task)
         
     } catch (error) {
-        return res.status(404).json({message: "Task not found"})
+        next(error);
     }
 }
 
-export const createTask = async (req, res)=> {
+export const createTask = async (req, res, next)=> {
     try {
         const {title, description, quantity, market } = req.body;
         const marketInfo = await marketModel.findById(market);
@@ -43,33 +43,32 @@ export const createTask = async (req, res)=> {
         res.json(savedTask) 
         
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({message: "Error: " + error})
+        next(error);
     }
 }
 
-export const deleteTask = async (req, res)=> {
+export const deleteTask = async (req, res, next)=> {
     try {
         const task = await Task.findByIdAndDelete(req.params.id)
         if(!task) return res.status(404).json({message: "Task not found"})
         return res.status(204).json({message: "Tarea eliminada"})
         
     } catch (error) {
-        return res.status(404).json({message: "Task not found"})
+        next(error);
     }
 }
 
-export const deleteTaskbyMarket = async (req, res)=> {
+export const deleteTaskbyMarket = async (req, res, next)=> {
     try {
         const task = await Task.deleteMany({ 'market._id': req.params.id })
         return res.status(204).json({message: "Tareas eliminadas"})
         
     } catch (error) {
-        return res.status(404).json({message: "Task not found"})
+        next(error);
     }
 }
 
-export const updateTask = async (req, res)=> {
+export const updateTask = async (req, res, next)=> {
     try {
         const { title, description, quantity, market } = req.body;
 
@@ -98,11 +97,11 @@ export const updateTask = async (req, res)=> {
         res.json(updatedTask);
         
     } catch (error) {
-        return res.status(500).json({message: "Something went bad"})
+       next(error);
     }
 }
 
-export const updateFinishedTask = async (req, res)=> {
+export const updateFinishedTask = async (req, res, next)=> {
     try {
         const task = await Task.findByIdAndUpdate(req.params.id, { $set: {finished: !req.body.actualState} }, {new: true});
 
@@ -110,6 +109,6 @@ export const updateFinishedTask = async (req, res)=> {
         res.json(task)
         
     } catch (error) {
-        return res.status(404).json({message: "Task not found"})
+        next(error);
     }
 }

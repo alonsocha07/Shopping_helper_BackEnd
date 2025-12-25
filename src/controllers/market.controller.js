@@ -14,18 +14,18 @@ export const getMarkets = async (req, res) => {
     }
 }
 
-export const getMarket = async (req, res)=> {
+export const getMarket = async (req, res, next)=> {
     try {
         const market = await Market.findById(req.params.id).populate('user')
         if(!market) return res.status(404).json({message: "Market not found"})
         res.json(market)
         
     } catch (error) {
-        return res.status(404).json({message: "Market not found"})
+        next(error);
     }
 }
 
-export const createMarket = async (req, res)=> {
+export const createMarket = async (req, res, next)=> {
     try {
         const {name } = req.body;
         const newMarket = new Market({
@@ -37,22 +37,22 @@ export const createMarket = async (req, res)=> {
         res.json(savedMarket) 
         
     } catch (error) {
-        return res.status(500).json({message: "Error"})
+        next(error);
     }
 }
 
-export const deleteMarket = async (req, res)=> {
+export const deleteMarket = async (req, res, next)=> {
     try {
         const market = await Market.findByIdAndDelete(req.params.id)
         if(!market) return res.status(404).json({message: "Market not found"})
         return res.status(204).json({message: "Market eliminado"})
         
     } catch (error) {
-        return res.status(404).json({message: "Market not found"})
+        next(error);
     }
 }
 
-export const updateMarket = async (req, res)=> {
+export const updateMarket = async (req, res, next)=> {
     try {
         const market = await Market.findByIdAndUpdate(req.params.id, req.body ,{
             new: true 
@@ -61,6 +61,6 @@ export const updateMarket = async (req, res)=> {
         res.json(market)
         
     } catch (error) {
-        return res.status(404).json({message: "Market not found"})
+        next(error);
     }
 }

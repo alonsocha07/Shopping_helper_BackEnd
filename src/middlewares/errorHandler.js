@@ -3,10 +3,7 @@ import { logErrorToMongo } from "../utils/logErrorToMongo.js";
 export const errorHandler = async (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
 
-  const clientMessage =
-    statusCode >= 500
-      ? "Something went wrong. Please try again later."
-      : err.message;
+  const clientMessage = err.message ? err.message : "Something went wrong. Please try again later.";
 
   try {
     await logErrorToMongo(err, req);

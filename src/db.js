@@ -7,7 +7,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 export const connectDB = async () => {
     try {
-        const url = process.env.URLMONGO || 'mongodb://127.0.0.1/shoppingHelperdbFAIL'
+        const url = process.env.URLMONGO || 'mongodb://127.0.0.1/shoppingHelperdb'
         console.log('url de ejemplo ', url);
         await mongoose.connect(url)
         console.log('----------db is connected');
@@ -16,5 +16,3 @@ export const connectDB = async () => {
         console.log(error); 
     }  
 }
-
-

@@ -86,8 +86,8 @@ export const login = async (req, res, next) => {
       updatedAt: userFound.updatedAt,
     }); 
   } catch (error) {
-    res.status(500).json({message: error.message})
-    //next(error);
+    //res.status(500).json({message: error.message})
+    next(error);
   }
 };
 

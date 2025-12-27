@@ -6,7 +6,7 @@ import taskRoutes from './routes/task.routes.js'
 import marketRoutes from './routes/market.routes.js'
 import cors from 'cors'
 import { connectDB } from './db.js'
-
+import { errorHandler } from './middlewares/errorHandler.js';
 import serverless from 'serverless-http'; 
 
 const app = express();
@@ -27,6 +27,9 @@ app.use(cookieParser())
 app.use('/api', authRoutes)
 app.use('/api', taskRoutes)
 app.use('/api', marketRoutes)
+
+
+app.use(errorHandler);
 
 app.set('trust proxy', 1); //necesarry for the cookies to work in production with https (Reverse proxy)
 

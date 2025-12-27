@@ -4,7 +4,7 @@ import {createAccessToken} from '../libs/jwt.js'
 import jwt from "jsonwebtoken";
 import { TOKEN_SECRET } from "../config.js";
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
   const { email, password, username } = req.body;
 
 
@@ -37,11 +37,11 @@ export const register = async (req, res) => {
     })
      
   } catch (error) {
-   res.status(500).json({message: error.message})
+   next(error);
   }
 };
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
 
   let { email, password } = req.body;
 
@@ -56,11 +56,17 @@ export const login = async (req, res) => {
     const userFound =  await User.findOne({email})
     console.log(`userFound: ${userFound._id, userFound.username, userFound.email}`);
 
-    if (!userFound) return res.status(400).json({error : ["Usuario no encontrado"]})
+    if (!userFound) {
+      console.error('Login error: Usuario no encontrado', { email })
+      return res.status(400).json({errorMessage : ["Usuario no encontrado"]})
+    }
 
     const isMatch = await bcrypt.compare(password, userFound.password);
 
-    if (!isMatch) return res.status(400).json({error: ["Contraseña incorrecta"]})
+    if (!isMatch) {
+      console.error('Login error: Contraseña incorrecta', { email })
+      return res.status(400).json({errorMessage: ["Contraseña incorrecta"]})
+    }
 
     const token = await createAccessToken({id: userFound._id, username: userFound.username,})
 
@@ -80,7 +86,8 @@ export const login = async (req, res) => {
       updatedAt: userFound.updatedAt,
     }); 
   } catch (error) {
-   res.status(500).json({message: error.message})
+    //res.status(500).json({message: error.message})
+    next(error);
   }
 };
 
@@ -94,7 +101,10 @@ export const logout = async (req, res) => {
 export const profile = async (req, res) => {
   const userFound =  await User.findById(req.user.id)
 
-  if(!userFound) return res.status(400).json({message: "Usuario no encontrado"})
+  if(!userFound) {
+    console.error('Profile error: Usuario no encontrado', { userId: req.user.id })
+    return res.status(400).json({message: "Usuario no encontrado"})
+  }
   
   return res.json({
     id: userFound._id,
@@ -112,10 +122,16 @@ export const verifyToken = async (req, res) => {
   if(!token) return res.status(401).json({message: "Unauthorized"})
 
   jwt.verify(token, TOKEN_SECRET, async (err, user) => {
-    if (err) return res.status(401).json({message: "Unauthorized"})
+    if (err) {
+      console.error('verifyToken error (jwt.verify):', err)
+      return res.status(401).json({message: "Unauthorized"}) //Possibility of changing this return to a next(err)
+    }
 
     const userFound = await User.findById(user.id)
-    if(!userFound) return res.status(401).json({message: "Unauthorized"})
+    if(!userFound) {
+      console.error('verifyToken error: Usuario no encontrado', { userId: user.id })
+      return res.status(401).json({message: "Unauthorized"})// Possibility of changing this return to a next(err)
+    }
 
     return res.json({
       id: userFound._id,

@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.routes.js'
 import taskRoutes from './routes/task.routes.js'
 import marketRoutes from './routes/market.routes.js'
+import utilsRoute from './routes/utils.routes.js'
 import cors from 'cors'
 import { connectDB } from './db.js'
 import { errorHandler } from './middlewares/errorHandler.js';
@@ -27,6 +28,7 @@ app.use(cookieParser())
 app.use('/api', authRoutes)
 app.use('/api', taskRoutes)
 app.use('/api', marketRoutes)
+app.use('/api', utilsRoute)
 
 
 app.use(errorHandler);

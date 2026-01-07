@@ -54,18 +54,17 @@ export const login = async (req, res, next) => {
   try {
     
     const userFound =  await User.findOne({email})
-    console.log(`userFound: ${userFound._id, userFound.username, userFound.email}`);
 
     if (!userFound) {
       console.error('Login error: Usuario no encontrado', { email })
-      return res.status(400).json({errorMessage : ["Usuario no encontrado"]})
+      return res.status(400).json({message : ["Usuario no encontrado"]})
     }
 
     const isMatch = await bcrypt.compare(password, userFound.password);
 
     if (!isMatch) {
       console.error('Login error: Contraseña incorrecta', { email })
-      return res.status(400).json({errorMessage: ["Contraseña incorrecta"]})
+      return res.status(400).json({message: ["Contraseña incorrecta"]})
     }
 
     const token = await createAccessToken({id: userFound._id, username: userFound.username,})
@@ -74,7 +73,8 @@ export const login = async (req, res, next) => {
       httpOnly: true,
       secure: true,        
       sameSite: "none", 
-      maxAge: 24 * 60 * 60 * 1000 
+      //maxAge: 24 * 60 * 60 * 1000 
+      maxAge: 60 * 1000 
     });
 
      res.json({

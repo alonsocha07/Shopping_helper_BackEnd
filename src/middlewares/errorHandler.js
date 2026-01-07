@@ -13,6 +13,6 @@ export const errorHandler = async (err, req, res, next) => {
 
   return res.status(statusCode).json({
     success: false,
-    errorMessage: clientMessage
+    message: clientMessage
   });
 };
